@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Solutions 
+title: Solutions
 author: Chenlu Wang
 date: 2019-02-13
 ---
@@ -35,7 +35,7 @@ class Solution(object):
             for j in range(i+1,n):
                 if nums[i]+nums[j]==target:
                     return i,j
-                
+
 ```
 
 ## 2.Reverse Integer
@@ -71,7 +71,7 @@ class Solution(object):
         :type x: int
         :rtype: int
         """
-        
+
         b=0
         xxx=abs(x)
         if xxx>2**31-1:
@@ -92,9 +92,9 @@ class Solution(object):
                     b=b
                 else:
                     b=-b
-            
+
             return b
-            
+
 ```
 
 ## 3.Palindrome Number
@@ -136,10 +136,10 @@ class Solution(object):
         :type x: int
         :rtype: bool
         """
-        
+
         b=0
-        
-        
+
+
         xx=abs(x)
         n=len(str(xx))
         a=range(n)
@@ -148,13 +148,13 @@ class Solution(object):
             xx=xx//10
         for i in range(n):
             b=b+a[i]*pow(10,n-i-1)
-            
-        
+
+
         if b==x:
             return True
         else:
             return False
-        
+
 ```
 
 ## 4.Roman to Integer
@@ -169,9 +169,9 @@ class Solution(object):
 
 >Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
 
-* I can be placed before V (5) and X (10) to make 4 and 9. 
+* I can be placed before V (5) and X (10) to make 4 and 9.
 
-* X can be placed before L (50) and C (100) to make 40 and 90. 
+* X can be placed before L (50) and C (100) to make 40 and 90.
 
 * C can be placed before D (500) and M (1000) to make 400 and 900.
 
@@ -227,7 +227,7 @@ class Solution(object):
         for i in range(n):
             if i+1<n and D[s[i]]<D[s[i+1]]:
                 value-=D[s[i]]
-                
+
             else:
                 value+=D[s[i]]
         return value
@@ -289,14 +289,14 @@ class Solution(object):
         if n%2!=0:
             return False
         map={'(':')','[':']','{':'}',')':'s',']':'s','}':'s'}
- 
+
         j=0
         for i in range(pow(n,2)/2):
             if j+1<len(s) and map[str(s[j])]==s[j+1]:
                 s.pop(j)
                 s.pop(j)
-                j=0 
-                   
+                j=0
+
             else:
                 s=s
                 j+=1    
@@ -522,5 +522,80 @@ class Solution(object):
                 else:
                     s=-1
         return s
-                
+
+```
+
+
+## 10. Median of Two Sorted Arrays
+
+>There are two sorted arrays nums1 and nums2 of size m and n respectively.
+
+>Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+>You may assume nums1 and nums2 cannot be both empty.
+
+### Example:
+
+>nums1 = [1, 3]
+
+>nums2 = [2]
+
+>The median is 2.0
+
+```{python}
+class Solution(object):
+
+    def partition(self,num):
+        p=num[-1]
+        n=len(num)
+        if n==1:
+            return num
+        else:
+            left=[]
+            right=[]
+            for i in num[0:n-1]:
+                if i<=p:
+                    left+=[i]
+                else:
+                    right+=[i]
+            return left,p, right
+    def quicksort(self,num):
+        if len(num)==1:
+            return [num[0]]
+        elif len(num)==0:
+            return [" "]
+        else:
+
+            left,p,right=self.partition(num)
+            return [self.quicksort(left)]+[p]+[self.quicksort(right)]
+    def expand(self,b):
+        if len(b)==1:
+            if b[0]==' ':
+                return []
+            else:
+                return b
+        else:
+
+            return self.expand(b[0])+[b[1]]+self.expand(b[2])
+
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        m=len(nums1)
+        n=len(nums2)
+
+        num=nums1+nums2
+        b=self.quicksort(num)
+        sort_num=self.expand(b)
+
+        if (m+n)%2==0:
+            return (sort_num[(m+n)/2-1]+sort_num[(m+n)/2])/2.0
+        else:
+            return sort_num[(m+n-1)/2]
+
+
+
 ```
