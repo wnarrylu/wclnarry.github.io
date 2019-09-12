@@ -599,3 +599,195 @@ class Solution(object):
 
 
 ```
+
+## 11.Merge k Sorted Lists
+
+>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+### example
+
+>Input:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+
+>Output: 1->1->2->3->4->4->5->6
+
+```{python}
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def partition(self,num):
+        p=num[-1]
+        n=len(num)
+        if n==1:
+            return num
+        else:
+            left=[]
+            right=[]
+            for i in num[0:n-1]:
+                if i<=p:
+                    left+=[i]
+                else:
+                    right+=[i]
+            return left,p, right
+    def quicksort(self,num):
+        if len(num)==1:
+            return [num[0]]
+        elif len(num)==0:
+            return [" "]
+        else:
+
+            left,p,right=self.partition(num)
+            return [self.quicksort(left)]+[p]+[self.quicksort(right)]
+    def expand(self,b):
+        if len(b)==1:
+            if b[0]==' ':
+                return []
+            else:
+                return b
+        else:
+
+            return self.expand(b[0])+[b[1]]+self.expand(b[2])
+    def sortvalue(self,num):
+        b=self.quicksort(num)
+        sort_num=self.expand(b)
+        return sort_num
+
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        #get the value:
+
+        if not lists:
+
+            return None
+        value=[]
+
+        for list in lists:
+            p=True
+            while p:
+                if list!=None:
+                    value+=[list.val]
+
+                    if list.next==None:
+                        p=False
+                    else:
+                        list=list.next
+                else:
+                    p=False
+
+        if value==[]:
+            return None
+
+        value=self.sortvalue(value)
+        values=[]
+        for val in value:
+            values=[val]+values
+
+
+
+
+
+        Next=None
+        end_point=None
+        for val in values:
+            node=ListNode(val)
+            node.next=Next
+            Next=node
+
+
+        return node
+```
+
+
+```{python}
+class Solution(object):
+    def partition(self,num):
+        p=num[-1]
+        n=len(num)
+        if n==1:
+            return num
+        else:
+            left=[]
+            right=[]
+            for i in num[0:n-1]:
+                if i<=p:
+                    left+=[i]
+                else:
+                    right+=[i]
+            return left,p, right
+    def quicksort(self,num):
+        if len(num)==1:
+            return [num[0]]
+        elif len(num)==0:
+            return [" "]
+        else:
+
+            left,p,right=self.partition(num)
+            return [self.quicksort(left)]+[p]+[self.quicksort(right)]
+    def expand(self,b):
+        if len(b)==1:
+            if b[0]==' ':
+                return []
+            else:
+                return b
+        else:
+
+            return self.expand(b[0])+[b[1]]+self.expand(b[2])
+    def sortvalue(self,num):
+        b=self.quicksort(num)
+        sort_num=self.expand(b)
+        return sort_num
+
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        #get the value:
+
+        if lists==[]:
+
+            return
+        value=[]
+
+        for list in lists:
+            p=True
+            while p:
+                value+=[list.val]
+                if list.next==None:
+                    p=False
+                else:
+                    list=list.next
+
+        value=self.sortvalue(value)
+        values=[]
+        for val in value:
+            values=[val]+values
+
+
+
+
+
+        Next=None
+        end_point=None
+        for val in values:
+            node=ListNode(val)
+            node.next=Next
+            Next=node
+
+
+        return node
+
+
+
+```
